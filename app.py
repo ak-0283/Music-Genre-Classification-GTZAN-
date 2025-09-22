@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.model_selection import train_test_split
@@ -61,12 +60,18 @@ if uploaded_file is not None:
                     cmap="Blues", ax=ax)
         st.pyplot(fig)
 
-    # Sidebar for Sample Prediction
-    st.sidebar.header("Test a Sample from Test Set")
-    sample_index = st.sidebar.number_input("Pick Sample Index", min_value=0, max_value=len(X_test)-1, value=0)
-    if st.sidebar.button("Predict Sample Genre"):
+    # -------------------------------
+    # Sample Prediction Section (Main Page)
+    st.header("Test a Sample from Test Set")
+    sample_index = st.number_input(
+        "Pick Sample Index", min_value=0, max_value=len(X_test)-1, value=0
+    )
+
+    if st.button("Predict Sample Genre"):
         sample = X_test[sample_index].reshape(1, -1)
         pred_genre = encoder.inverse_transform(model.predict(sample))
-        st.sidebar.success(f"🎵 Predicted Genre: **{pred_genre[0]}**")
+        st.markdown("### 🎵 Predicted Genre")
+        st.success(f"**{pred_genre[0]}**")
+
 else:
     st.warning("⚠️ Please upload the features CSV to start.")
